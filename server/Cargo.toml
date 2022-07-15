@@ -1,0 +1,17 @@
+[package]
+name = "server"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = {version="0.4.19", features=["serde"]}
+futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
+futures-channel = "0.3.21"
+futures = "0.3.21"
+serde = {version="1.0.138", features=["derive"]}
+tokio = {version="1.19.2", features=["full"]}
+tokio-tungstenite = "0.17.1"
+tungstenite = "0.17.2"
+uuid = {verison="1.1.2", features=["v4", "serde"]}
