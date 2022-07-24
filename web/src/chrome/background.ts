@@ -41,10 +41,41 @@ chrome.runtime.onMessage.addListener((port) => {
     }
 })
 
+chrome.runtime.onConnect.addListener((port => {
+    if(port.name === "main") {
+        port.onMessage.addListener((message, something) => {
+            console.log(`message: ${JSON.stringify(message)} \nsomething: ${JSON.stringify(something)}`);
+            switch (message.type) {
+
+                case MessageType.CONNECT: {
+                    console.log("trying to connect...")
+                    connect();
+                    break;
+                }
+                case MessageType.SEND_MESSAGE: {
+                    if(isSocketReady()){
+                        ws.send("hey");
+                        port.postMessage("Message sent");
+                    }
+                    else{
+                        port.postMessage("connection not established");
+                    }
+                    break;
+                }
+                case MessageType.CHECK_CONNECTION: {
+                    port.postMessage(isSocketReady());
+                    break;
+                }
+            }
+        })
+    }
+}))
+
 chrome.runtime.onMessage.addListener((msg, sender, res) => {
     console.log(sender);
     switch(msg.type) {
         case MessageType.CONNECT: {
+            console.log("trying to connect...")
             connect();
             break;
         }
@@ -78,7 +109,7 @@ function isSocketReady(): Boolean {
 
 function connect() {
     if(!ws) {
-        ws = new WebSocket("ws://0.0.0.0:6060");
+        ws = new WebSocket("ws://0.0.0.0:6969/ws/somethingg");
         return;
     }
     return;

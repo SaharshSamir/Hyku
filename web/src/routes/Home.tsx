@@ -7,25 +7,27 @@ export const Home = () => {
     const [loading, setLoading] = useState(false);
     const [isConnected, setIsConnected] = useState(false);
 
-    //comment stuff
-    const payload: Payload = {
-        from: "something",
-        to: "someting else",
-        crossUser: false,
-        msg: "ur mum says hi"
-    }
+    useEffect(() => {
+        port.onMessage.addListener((msg) => {
+            console.log(msg);
+        })
+    }, [])
+
     const handleConect = () => {
+        console.log("huh");
         const connectMessage = {
             type: MessageType.CONNECT
         }
         port.postMessage(connectMessage);
     }
-    port.postMessage({type: "SEND_MESSAGE"})
+    const sendMessage = () => {
+        port.postMessage({type: MessageType.SEND_MESSAGE});
+    } 
 
     return (
         <div className="App">
             <button onClick={handleConect}>connect</button>
-            <button>sennd message</button>
+            <button onClick={sendMessage}>sennd message</button>
         </div>
     )
 }
